@@ -15,10 +15,10 @@ class App {
     }
 
     private config(): void{
-        this.routerCtrl.setRoutes(this.app)
-
-        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.json())
         this.app.use(bodyParser.urlencoded({ extended: false }))
+
+        this.routerCtrl.setRoutes(this.app)
     }
 
 }
