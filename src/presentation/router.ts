@@ -8,6 +8,7 @@ import { SignOutHandler } from './endpoints/sign-out'
 import { ChangePasswordHandler } from './endpoints/change-password'
 import { BanUserHandler } from './endpoints/banUser'
 import { UnbanUserHandler } from './endpoints/unbanUser'
+import { DeleteUserHandler } from './endpoints/delete-user';
 
 export class Routes {
     public setRoutes(app: Application){
@@ -117,6 +118,22 @@ export class Routes {
                 }
 
                 const result = await UnbanUserHandler(
+                    { id: req.body.userId }, 
+                    new Context(AuthType.Firebase))
+
+                res.status(200).send({ message: result })
+            } catch (err) {
+                res.status(400).send(err)
+            }
+        })
+
+        app.route('/firebase/delete-user').post(async (req: Request, res: Response): Promise<any> => {
+            try{
+                if(!(req.body && req.body.userId)) {
+                    throw new Error('UserId not provided')
+                }
+
+                const result = await DeleteUserHandler(
                     { id: req.body.userId }, 
                     new Context(AuthType.Firebase))
 
