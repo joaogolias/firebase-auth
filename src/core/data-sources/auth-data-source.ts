@@ -1,6 +1,7 @@
 export interface  AuthDataSource {
     signInWithEmail(email: string, password: string): Promise<AuthInfo>
     signUpWithEmail(email: string, password: string): Promise<AuthInfo>
+    signOut(token: string, refreshToken: string): Promise<void> 
     sendPasswordResetEmail(email: string): Promise<string>
     resetPassword(oldPassword: string, newPassword: string): Promise<string>
     authenticate(token: string, refreshToken: string): Promise<AuthInfo>

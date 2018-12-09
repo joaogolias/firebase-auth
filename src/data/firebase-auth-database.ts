@@ -4,6 +4,7 @@ import { getConfig } from '../config';
 import { AuthDataSource, AuthInfo, AuthService, ThirdProvider } from '../core/data-sources/auth-data-source';
 
 export class FirebaseAuthDatabase implements AuthDataSource{
+    private user: firebase.User
     constructor() {
         if (!firebase.apps.length) {
             firebase.initializeApp({
@@ -32,7 +33,9 @@ export class FirebaseAuthDatabase implements AuthDataSource{
         return new Promise<AuthInfo>(async (res, rej) => {
             try {
                 const credential = await firebase.auth().createUserWithEmailAndPassword(email, password)
-                res(this.firebaseCredentialToAuthInfo(credential))
+                const customToken = await admin.auth().createCustomToken(credential.user.uid)
+        
+                res(this.firebaseCredentialToAuthInfo(credential, customToken))
             } catch (err) {
                 rej(err)
             }
@@ -43,7 +46,9 @@ export class FirebaseAuthDatabase implements AuthDataSource{
         return new Promise<AuthInfo>(async (res, rej) =>  {
             try {
                 const credential = await firebase.auth().signInWithEmailAndPassword(email, password)
-                res(this.firebaseCredentialToAuthInfo(credential))
+                const customToken = await admin.auth().createCustomToken(credential.user.uid)
+
+                res(this.firebaseCredentialToAuthInfo(credential, customToken))
             } catch (err) {
                 rej(err)
             }
@@ -65,28 +70,30 @@ export class FirebaseAuthDatabase implements AuthDataSource{
     }
 
     public async authenticate(token: string, refreshToken: string): Promise<AuthInfo> {
-        return new Promise<AuthInfo>(async (res, rej) => {
-            try {
-                const info = await admin.auth().verifyIdToken(token)
-                res({
-                    id: info.uid,
-                    token,
-                    refreshToken,
-                    authService: AuthService.Firebase,
-                    thirdProvider: ThirdProvider.None,
-                })
-            } catch (err) {
-                rej(err)
-            }
-        })
+        await firebase.auth().signInWithCustomToken(token).catch(err => { console.log(err) })
+        
+        this.user = firebase.auth().currentUser
+
+        return {
+            id: this.user.uid,
+            token,
+            refreshToken: this.user.refreshToken,
+            authService: AuthService.Firebase,
+            thirdProvider: ThirdProvider.None
+        }
+    }
+    
+    public async signOut(token: string, refreshToken: string): Promise<void> {
+        await this.authenticate(token, refreshToken)
+        await firebase.auth().signOut()
     }
     
     public async refreshToken(refreshToken: string): Promise<string> {
         return ''
     }
 
-    private async firebaseCredentialToAuthInfo(firebaseCredentials: firebase.auth.UserCredential): Promise<AuthInfo> {
-        const token = await firebaseCredentials.user.getIdToken()
+    private async firebaseCredentialToAuthInfo(firebaseCredentials: firebase.auth.UserCredential, customToken?: string): Promise<AuthInfo> {
+        const token = customToken || await firebaseCredentials.user.getIdToken()
         return {
             id: firebaseCredentials.user.uid,
             token,
