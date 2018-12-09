@@ -1,36 +1,28 @@
 import { Application, Request, Response } from 'express'
-import { HelloWorldHandler } from './endpoints/helloWolrd'
-import { LoginHandler } from './endpoints/login'
-import { SignUpHandler } from './endpoints/signup'
+import { SigninHandler } from './endpoints/firebase-login'
+import { SignUpHandler } from './endpoints/firebase-signup'
+import { Context, AuthType } from '../context'
 
 export class Routes {
     public setRoutes(app: Application){
-        app.route('/hello-world').get((req: Request, res: Response) => {
-            const response = HelloWorldHandler()
-            res.status(200).send({
-                message: response
-            })
-        })
-
-        app.route('/login').post(async (req: Request, res: Response): Promise<any> => {
+        app.route('/firebase/signin').post(async (req: Request, res: Response): Promise<any> => {
             try {
                 if(!req.body) {
                     throw new Error('Missing Body')
                 }
-                const result = await LoginHandler(req.body)
+                const result = await SigninHandler(req.body, new Context(AuthType.Firebase))
                 res.status(200).send(result)
             } catch (err) {
-                console.log('err: ', err)
                 res.status(400).send(err)
             }
         })
 
-        app.route('/signup').post(async (req: Request, res: Response): Promise<any> => {
+        app.route('/firebase/signup').post(async (req: Request, res: Response): Promise<any> => {
             try {
                 if(!req.body) {
                     throw new Error('Missing Body')
                 }
-                const result = await SignUpHandler(req.body)
+                const result = await SignUpHandler(req.body, new Context(AuthType.Firebase))
 
                 res.status(200).send(result)
             } catch (err) {
