@@ -5,7 +5,6 @@ import { SignOutUseCase } from "../../core/sign-out-use-case"
 export const SignOutHandler = async (input: any, context: Context): Promise<void>  => {   
     const signOutHandlerInput: SignOutHandlerInput = {
         token: input['token'] as string,
-        refreshToken: input['refresh-troken'] as string,
     }
 
     await new SignOutUseCase(context.getAuthDataSource()).execute(signOutHandlerInput)
@@ -14,5 +13,4 @@ export const SignOutHandler = async (input: any, context: Context): Promise<void
 
 export interface SignOutHandlerInput {
     token: string
-    refreshToken: string
 }

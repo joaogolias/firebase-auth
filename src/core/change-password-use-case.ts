@@ -6,6 +6,6 @@ export class ChangePasswordUseCase {
     constructor(private authDataSource: AuthDataSource){}
 
     public async execute(input: ChangePassowrdHandlerInput): Promise<string>{
-        return this.authDataSource.changePassword(input.token, input.refreshToken, input.newPassword)
+        return this.authDataSource.changePassword(input.token, input.newPassword)
     }
 }

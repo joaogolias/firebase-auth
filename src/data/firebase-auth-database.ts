@@ -1,10 +1,11 @@
 import * as admin from 'firebase-admin'
 import * as firebase from 'firebase'
-import { getConfig } from '../config';
-import { AuthDataSource, AuthInfo, AuthService, ThirdProvider } from '../core/data-sources/auth-data-source';
+import { getConfig } from '../config'
+import { AuthDataSource, AuthInfo, AuthService, ThirdProvider } from '../core/data-sources/auth-data-source'
 
 export class FirebaseAuthDatabase implements AuthDataSource{
     private user: firebase.User
+
     constructor() {
         if (!firebase.apps.length) {
             firebase.initializeApp({
@@ -64,13 +65,13 @@ export class FirebaseAuthDatabase implements AuthDataSource{
             }
         })
     }
-    public async changePassword(token: string, refreshToken: string, newPassword: string): Promise<string> {
-        await this.authenticate(token, refreshToken)
+    public async changePassword(token: string, newPassword: string): Promise<string> {
+        await this.authenticate(token)
         await this.user.updatePassword(newPassword)
         return 'Password successfully changed'
     }
 
-    public async authenticate(token: string, refreshToken: string): Promise<AuthInfo> {
+    public async authenticate(token: string): Promise<AuthInfo> {
         await firebase.auth().signInWithCustomToken(token)
         
         this.user = firebase.auth().currentUser
@@ -84,13 +85,37 @@ export class FirebaseAuthDatabase implements AuthDataSource{
         }
     }
     
-    public async signOut(token: string, refreshToken: string): Promise<void> {
-        await this.authenticate(token, refreshToken)
+    public async signOut(token: string): Promise<void> {
+        await this.authenticate(token)
         await firebase.auth().signOut()
     }
 
-    public async refreshToken(refreshToken: string): Promise<string> {
-        return ''
+    public async banUser(uid: string): Promise<string> {
+        return new Promise<string>(async (res, rej) => {
+            try {
+                await admin.auth().updateUser(uid, {
+                    disabled: true
+                })
+
+                res("User disabled successfully")
+            } catch (err) {
+                rej(err)
+            }
+        }) 
+    }
+
+    public async unbanUser(uid: string): Promise<string> {
+        return new Promise<string>(async (res, rej) => {
+            try {
+                await admin.auth().updateUser(uid, {
+                    disabled: false
+                })
+
+                res("User enabled successfully")
+            } catch (err) {
+                rej(err)
+            }
+        }) 
     }
 
     private async firebaseCredentialToAuthInfo(firebaseCredentials: firebase.auth.UserCredential, customToken?: string): Promise<AuthInfo> {

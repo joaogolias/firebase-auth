@@ -4,7 +4,6 @@ import { ChangePasswordUseCase } from "../../core/change-password-use-case"
 export const ChangePasswordHandler = async (input: any, context: Context): Promise<string>  => {   
     const changePassowrdHandlerInput: ChangePassowrdHandlerInput = {
         token: input.headers['token'] as string,
-        refreshToken: input.headers['refresh-troken'] as string,
         newPassword: input.body.newPassword
     }
 
@@ -15,6 +14,5 @@ export const ChangePasswordHandler = async (input: any, context: Context): Promi
 
 export interface ChangePassowrdHandlerInput {
     token: string
-    refreshToken: string
     newPassword: string
 }

@@ -8,6 +8,6 @@ export class SignOutUseCase {
     ){}
 
     public async execute(input: SignOutHandlerInput): Promise<void> {
-        return this.authDataSource.signOut(input.token, input.refreshToken)
+        return this.authDataSource.signOut(input.token)
     } 
 }
