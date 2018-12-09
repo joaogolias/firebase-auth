@@ -24,7 +24,6 @@ export class FirebaseAuthDatabase implements AuthDataSource{
                     clientEmail: getConfig().firebase.clientEmail,
                     privateKey: getConfig().firebase.privateKey,
                 }),
-                // apiKey: getConfig().firebase.apiKey,
               });
         }
     }
@@ -65,12 +64,14 @@ export class FirebaseAuthDatabase implements AuthDataSource{
             }
         })
     }
-    public async resetPassword(oldPassword: string, newPassword: string): Promise<string> {
-        return ''
+    public async changePassword(token: string, refreshToken: string, newPassword: string): Promise<string> {
+        await this.authenticate(token, refreshToken)
+        await this.user.updatePassword(newPassword)
+        return 'Password successfully changed'
     }
 
     public async authenticate(token: string, refreshToken: string): Promise<AuthInfo> {
-        await firebase.auth().signInWithCustomToken(token).catch(err => { console.log(err) })
+        await firebase.auth().signInWithCustomToken(token)
         
         this.user = firebase.auth().currentUser
 
@@ -87,7 +88,7 @@ export class FirebaseAuthDatabase implements AuthDataSource{
         await this.authenticate(token, refreshToken)
         await firebase.auth().signOut()
     }
-    
+
     public async refreshToken(refreshToken: string): Promise<string> {
         return ''
     }

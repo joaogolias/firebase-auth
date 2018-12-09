@@ -5,6 +5,7 @@ import { Context, AuthType } from '../context'
 import { SendResetPasswordEmailHandler } from './endpoints/send-reset-password-email'
 import { AuthenticateHandler } from './endpoints/authenticate';
 import { SignOutHandler } from './endpoints/sign-out';
+import { ChangePasswordHandler } from './endpoints/change-password';
 
 export class Routes {
     public setRoutes(app: Application){
@@ -66,6 +67,26 @@ export class Routes {
                     req.headers, 
                     new Context(AuthType.Firebase))
                 res.status(200).send(result)
+            } catch (err) {
+                res.status(400).send(err)
+            }
+        })
+
+        app.route('/firebase/change-password').get(async (req: Request, res: Response): Promise<any> => {
+            try{
+                if (!(req.headers && req.headers['token'] && req.headers['refresh-token'])) {
+                    throw new Error('Missing information in headers')
+                }
+
+                if(!(req.body && req.body['newPassword'])) {
+                    throw new Error('Missing newPassword parameter in body')
+                }
+
+                const result = await ChangePasswordHandler(
+                    { headers: req.headers, body: req.body }, 
+                    new Context(AuthType.Firebase))
+
+                res.status(200).send({ message: result })
             } catch (err) {
                 res.status(400).send(err)
             }
