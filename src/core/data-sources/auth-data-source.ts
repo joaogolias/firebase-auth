@@ -7,6 +7,7 @@ export interface  AuthDataSource {
     authenticate(token: string): Promise<AuthInfo>
     banUser(uid: string): Promise<string>
     unbanUser(uid: string): Promise<string>
+    deleteUser(uid: string): Promise<string>
 }
 
 export interface AuthInfo {

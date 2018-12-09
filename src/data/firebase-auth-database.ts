@@ -105,19 +105,17 @@ export class FirebaseAuthDatabase implements AuthDataSource{
     }
 
     public async unbanUser(uid: string): Promise<string> {
-        return new Promise<string>(async (res, rej) => {
-            try {
-                await admin.auth().updateUser(uid, {
-                    disabled: false
-                })
-
-                res("User enabled successfully")
-            } catch (err) {
-                rej(err)
-            }
-        }) 
+        await admin.auth().updateUser(uid, {
+            disabled: false
+        })
+        return "User enabled successfully"
     }
 
+    public async deleteUser(uid: string): Promise<string>{
+        await admin.auth().deleteUser(uid)
+        return 'User deleted successfully'
+    }
+    
     private async firebaseCredentialToAuthInfo(firebaseCredentials: firebase.auth.UserCredential, customToken?: string): Promise<AuthInfo> {
         const token = customToken || await firebaseCredentials.user.getIdToken()
         return {
