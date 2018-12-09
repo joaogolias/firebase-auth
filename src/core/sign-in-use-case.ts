@@ -1,7 +1,7 @@
 import { LoginInput } from "../presentation/endpoints/firebase-login"
 import { AuthDataSource, AuthInfo } from "./data-sources/auth-data-source"
 
-export class LoginUseCase {
+export class SignInUseCase {
     constructor(
         private authDataSource: AuthDataSource
     ){}

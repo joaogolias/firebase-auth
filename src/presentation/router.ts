@@ -3,6 +3,8 @@ import { SigninHandler } from './endpoints/firebase-login'
 import { SignUpHandler } from './endpoints/firebase-signup'
 import { Context, AuthType } from '../context'
 import { SendResetPasswordEmailHandler } from './endpoints/send-reset-password-email'
+import { FirebaseAuthDatabase } from '../data/firebase-auth-database';
+import { AuthenticateHandler } from './endpoints/authenticate';
 
 export class Routes {
     public setRoutes(app: Application){
@@ -41,6 +43,17 @@ export class Routes {
                     { email }, 
                     new Context(AuthType.Firebase))
 
+                res.status(200).send(result)
+            } catch (err) {
+                res.status(400).send(err)
+            }
+        })
+
+        app.route('/firebase/authenticate').get(async (req: Request, res: Response): Promise<any> => {
+            try{
+                const result = await AuthenticateHandler(
+                    req.headers, 
+                    new Context(AuthType.Firebase))
                 res.status(200).send(result)
             } catch (err) {
                 res.status(400).send(err)

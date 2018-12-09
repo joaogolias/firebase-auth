@@ -15,6 +15,17 @@ export class FirebaseAuthDatabase implements AuthDataSource{
                 apiKey: getConfig().firebase.apiKey,
               });
         }
+
+        if (!admin.apps.length) {
+            admin.initializeApp({
+                credential: admin.credential.cert({
+                    projectId: getConfig().firebase.projectId,
+                    clientEmail: getConfig().firebase.clientEmail,
+                    privateKey: getConfig().firebase.privateKey,
+                }),
+                // apiKey: getConfig().firebase.apiKey,
+              });
+        }
     }
     
     public async signUpWithEmail(email: string, password: string): Promise<AuthInfo>{
@@ -52,9 +63,24 @@ export class FirebaseAuthDatabase implements AuthDataSource{
     public async resetPassword(oldPassword: string, newPassword: string): Promise<string> {
         return ''
     }
-    public async authenticate(token: string): Promise<AuthInfo> {
-        return {} as AuthInfo
+
+    public async authenticate(token: string, refreshToken: string): Promise<AuthInfo> {
+        return new Promise<AuthInfo>(async (res, rej) => {
+            try {
+                const info = await admin.auth().verifyIdToken(token)
+                res({
+                    id: info.uid,
+                    token,
+                    refreshToken,
+                    authService: AuthService.Firebase,
+                    thirdProvider: ThirdProvider.None,
+                })
+            } catch (err) {
+                rej(err)
+            }
+        })
     }
+    
     public async refreshToken(refreshToken: string): Promise<string> {
         return ''
     }

@@ -1,5 +1,5 @@
 import { Context } from "../../context"
-import { SendResetPasswordEmailUseCase } from "../../core/send-reset-password-email"
+import { SendResetPasswordEmailUseCase } from "../../core/send-reset-password-email-use-case"
 
 export const SendResetPasswordEmailHandler = async (input: any, context: Context): Promise<string>  => {   
     const sendResetPasswordEmailInput: SendResetPasswordEmailInput = {
