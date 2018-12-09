@@ -40,7 +40,14 @@ export class FirebaseAuthDatabase implements AuthDataSource{
     }
 
     public async sendPasswordResetEmail(email: string): Promise<string> {
-        return ''
+        return new Promise<string>(async (res, rej) => {
+            try {
+                await firebase.auth().sendPasswordResetEmail(email)
+                res(`Reset Password Email sent to ${email}`)
+            } catch (err) {
+                rej(err)
+            }
+        })
     }
     public async resetPassword(oldPassword: string, newPassword: string): Promise<string> {
         return ''
