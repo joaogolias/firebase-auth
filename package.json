@@ -2,7 +2,7 @@
   "name": "firebase-auth",
   "version": "1.0.0",
   "description": "POC of authentication using firebase",
-  "main": "app.ts",
+  "main": "server.ts",
   "repository": "https://github.com/joaogolias/firebase-auth.git",
   "author": "Joao Golias <golias.appsimples@gmail.com>",
   "license": "MIT",
@@ -20,10 +20,14 @@
     "@types/mongoose": "^5.3.4",
     "@types/node": "^10.12.12",
     "@types/reflect-metadata": "^0.1.0"
+	},
+	"engines": {
+    "node": "8.11.3"
   },
   "scripts": {
     "build": "tsc",
     "dev": "ts-node ./lib/server.ts",
-    "start": "yarn build && nodemon ./build/server.js"
+		"start": "yarn build && nodemon ./build/server.js",
+		"deploy": "git push heroku master"
   }
 }
