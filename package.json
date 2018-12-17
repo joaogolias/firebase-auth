@@ -27,7 +27,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node ./lib/server.ts",
-		"start": "yarn build && nodemon ./build/server.js",
+		"build-and-start": "yarn build && nodemon ./build/server.js",
+		"start": "node ./build/server.js",
 		"deploy": "git push heroku master"
   }
 }
