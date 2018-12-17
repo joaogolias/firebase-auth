@@ -1,7 +1,7 @@
 import app from './presentation/app'
 
-app.listen(3000, () => {
-    console.log('Express server listening on port ' + 3000)
+app.listen(3001, () => {
+    console.log('Express server listening on port ' + 3001)
 
     app._router.stack.map((mainStack, i) => {
         getRoutes(mainStack)

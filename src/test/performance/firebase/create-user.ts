@@ -17,6 +17,7 @@ const test = async () => {
             const t1 = performance.now()
             requestTimeArray.push(t1-t0)
 
+						
             await firebaseAuth.deleteUser(auth.id)
         } catch (err) {
             console.log(err)

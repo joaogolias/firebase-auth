@@ -2,7 +2,7 @@
   "name": "firebase-auth",
   "version": "1.0.0",
   "description": "POC of authentication using firebase",
-  "main": "server.ts",
+  "main": "server.js",
   "repository": "https://github.com/joaogolias/firebase-auth.git",
   "author": "Joao Golias <golias.appsimples@gmail.com>",
   "license": "MIT",
