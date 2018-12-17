@@ -21,7 +21,7 @@ const test = async () => {
         } catch (err) {
             console.log(err)
         }
-    }
+    } 
 
     console.log(requestTimeArray)
     
