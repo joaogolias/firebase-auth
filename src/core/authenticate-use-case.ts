@@ -12,6 +12,10 @@ export class AuthenticateUseCase {
 				if (input.provider === 'facebook') {
 					authInfo = await this.authDataSource.facebookAuthenticate(input.token)
 				}
+
+				if(input.provider === 'google') {
+					authInfo = await this.authDataSource.googleAuthenticate(input.token)
+				}
 			}
       return authInfo
     }

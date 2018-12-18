@@ -6,6 +6,7 @@ export interface  AuthDataSource {
     changePassword(token: string, newPassword: string): Promise<string>
 		authenticate(token: string): Promise<AuthInfo>
 		facebookAuthenticate(token: string): Promise<AuthInfo>
+		googleAuthenticate(token: string): Promise<AuthInfo>
     banUser(uid: string): Promise<string>
     unbanUser(uid: string): Promise<string>
     deleteUser(uid: string): Promise<string>

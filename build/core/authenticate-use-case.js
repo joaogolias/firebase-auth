@@ -22,6 +22,9 @@ class AuthenticateUseCase {
                 if (input.provider === 'facebook') {
                     authInfo = yield this.authDataSource.facebookAuthenticate(input.token);
                 }
+                if (input.provider === 'google') {
+                    authInfo = yield this.authDataSource.googleAuthenticate(input.token);
+                }
             }
             return authInfo;
         });

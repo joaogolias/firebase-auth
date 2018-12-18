@@ -87,7 +87,24 @@ export class FirebaseAuthDatabase implements AuthDataSource{
 					})
 					.catch((err) => console.log('err: ', err)) 
 			})
-		
+		}
+
+		public async googleAuthenticate(token: string): Promise<AuthInfo> {
+			const credential = firebase.auth.GoogleAuthProvider.credential(token)
+
+			return new Promise<AuthInfo>(async (res, rej) => {
+				await firebase.auth().signInAndRetrieveDataWithCredential(credential)
+					.then((result) => {
+						res({
+							id: result.user.uid,
+							token,
+							refreshToken: result.user.refreshToken,
+							authService: AuthService.Cognito,
+							thirdProvider: ThirdProvider.Google,
+						})
+					})
+					.catch((err) => console.log('err: ', err)) 
+			})
 		}
     public async authenticate(token: string): Promise<AuthInfo> {
         await firebase.auth().signInWithCustomToken(token)
