@@ -5,7 +5,8 @@ import { AuthInfo } from "../../core/data-sources/auth-data-source";
 
 export const AuthenticateHandler = async (input: any, context: Context): Promise<AuthInfo>  => {   
     const authenticateHandlerInput: AuthenticateHandlerInput = {
-        token: input['token'] as string,
+				token: input['token'] as string,
+				provider: input['provider'] as string|| ''
     }
 
     const result = await new AuthenticateUseCase(context.getAuthDataSource())
@@ -14,5 +15,6 @@ export const AuthenticateHandler = async (input: any, context: Context): Promise
 }
 
 export interface AuthenticateHandlerInput {
-    token: string
+		token: string
+		provider: string
 }

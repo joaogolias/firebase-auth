@@ -5,6 +5,14 @@ export class AuthenticateUseCase {
     constructor(private authDataSource: AuthDataSource){}
 
     public async execute(input: AuthenticateHandlerInput): Promise<AuthInfo>{
-        return this.authDataSource.authenticate(input.token)
+			let authInfo: AuthInfo
+			if(!input.provider) {
+				authInfo = await this.authDataSource.authenticate(input.token)
+			} else {
+				if (input.provider === 'facebook') {
+					authInfo = await this.authDataSource.facebookAuthenticate(input.token)
+				}
+			}
+      return authInfo
     }
 }

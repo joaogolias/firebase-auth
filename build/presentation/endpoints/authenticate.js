@@ -12,6 +12,7 @@ const authenticate_use_case_1 = require("../../core/authenticate-use-case");
 exports.AuthenticateHandler = (input, context) => __awaiter(this, void 0, void 0, function* () {
     const authenticateHandlerInput = {
         token: input['token'],
+        provider: input['provider'] || ''
     };
     const result = yield new authenticate_use_case_1.AuthenticateUseCase(context.getAuthDataSource())
         .execute(authenticateHandlerInput);

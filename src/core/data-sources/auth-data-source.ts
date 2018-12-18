@@ -4,7 +4,8 @@ export interface  AuthDataSource {
     signOut(token: string): Promise<void> 
     sendPasswordResetEmail(email: string): Promise<string>
     changePassword(token: string, newPassword: string): Promise<string>
-    authenticate(token: string): Promise<AuthInfo>
+		authenticate(token: string): Promise<AuthInfo>
+		facebookAuthenticate(token: string): Promise<AuthInfo>
     banUser(uid: string): Promise<string>
     unbanUser(uid: string): Promise<string>
     deleteUser(uid: string): Promise<string>

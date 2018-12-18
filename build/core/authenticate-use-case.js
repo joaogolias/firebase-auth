@@ -14,7 +14,16 @@ class AuthenticateUseCase {
     }
     execute(input) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.authDataSource.authenticate(input.token);
+            let authInfo;
+            if (!input.provider) {
+                authInfo = yield this.authDataSource.authenticate(input.token);
+            }
+            else {
+                if (input.provider === 'facebook') {
+                    authInfo = yield this.authDataSource.facebookAuthenticate(input.token);
+                }
+            }
+            return authInfo;
         });
     }
 }

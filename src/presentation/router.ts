@@ -17,7 +17,7 @@ export class Routes {
                 if(!req.body) {
                     throw new Error('Missing Body')
                 }
-                const result = await SigninHandler(req.body, new Context(AuthType.Firebase))
+								const result = await SigninHandler(req.body, new Context(AuthType.Firebase))
                 res.status(200).send(result)
             } catch (err) {
                 res.status(400).send(err)
@@ -30,8 +30,7 @@ export class Routes {
                     throw new Error('Missing Body')
                 }
                 const result = await SignUpHandler(req.body, new Context(AuthType.Firebase))
-
-                res.status(200).send(result)
+								res.status(200).send(result)
             } catch (err) {
                 res.status(400).send(err)
             }
@@ -46,7 +45,6 @@ export class Routes {
                 const result = await SendResetPasswordEmailHandler(
                     { email }, 
                     new Context(AuthType.Firebase))
-
                 res.status(200).send(result)
             } catch (err) {
                 res.status(400).send(err)
@@ -57,7 +55,7 @@ export class Routes {
             try{
                 const result = await AuthenticateHandler(
                     req.headers, 
-                    new Context(AuthType.Firebase))
+										new Context(AuthType.Firebase))
                 res.status(200).send(result)
             } catch (err) {
                 res.status(400).send(err)
@@ -68,7 +66,7 @@ export class Routes {
             try{
                 const result = await SignOutHandler(
                     req.headers, 
-                    new Context(AuthType.Firebase))
+										new Context(AuthType.Firebase))
                 res.status(200).send(result)
             } catch (err) {
                 res.status(400).send(err)
@@ -88,7 +86,6 @@ export class Routes {
                 const result = await ChangePasswordHandler(
                     { headers: req.headers, body: req.body }, 
                     new Context(AuthType.Firebase))
-
                 res.status(200).send({ message: result })
             } catch (err) {
                 res.status(400).send(err)
@@ -104,7 +101,6 @@ export class Routes {
                 const result = await BanUserHandler(
                     req.headers, 
                     new Context(AuthType.Firebase))
-
                 res.status(200).send({ message: result })
             } catch (err) {
                 res.status(400).send(err)
@@ -120,7 +116,6 @@ export class Routes {
                 const result = await UnbanUserHandler(
                     { id: req.body.userId }, 
                     new Context(AuthType.Firebase))
-
                 res.status(200).send({ message: result })
             } catch (err) {
                 res.status(400).send(err)
@@ -135,8 +130,8 @@ export class Routes {
 
                 const result = await DeleteUserHandler(
                     { id: req.body.userId }, 
-                    new Context(AuthType.Firebase))
-
+										new Context(AuthType.Firebase))
+										
                 res.status(200).send({ message: result })
             } catch (err) {
                 res.status(400).send(err)

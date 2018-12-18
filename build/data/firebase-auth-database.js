@@ -82,6 +82,24 @@ class FirebaseAuthDatabase {
             return 'Password successfully changed';
         });
     }
+    facebookAuthenticate(token) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const credential = firebase.auth.FacebookAuthProvider.credential(token);
+            return new Promise((res, rej) => __awaiter(this, void 0, void 0, function* () {
+                yield firebase.auth().signInAndRetrieveDataWithCredential(credential)
+                    .then((result) => {
+                    res({
+                        id: result.user.uid,
+                        token,
+                        refreshToken: result.user.refreshToken,
+                        authService: auth_data_source_1.AuthService.Cognito,
+                        thirdProvider: auth_data_source_1.ThirdProvider.Facebook,
+                    });
+                })
+                    .catch((err) => console.log('err: ', err));
+            }));
+        });
+    }
     authenticate(token) {
         return __awaiter(this, void 0, void 0, function* () {
             yield firebase.auth().signInWithCustomToken(token);
